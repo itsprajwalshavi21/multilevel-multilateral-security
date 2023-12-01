@@ -1,0 +1,79 @@
+<div class="centered-content">
+  <div class="task-manager-container">
+    <div class="sidebar has-background-white">
+      <h1 class="title has-text-primary">Accounts</h1>
+
+      <div class="list-menu">
+        <ng-container *ngFor="let list of lists">
+          <ng-container *ngIf="list._userId && !isUserAdmin(list._userId)">
+            <a class="list-menu-item" [routerLink]="['/admin', list._id]">
+              <p>{{ list.title }}</p>
+            </a>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="task-list-container has-background-light">
+      <div *ngIf="tasks">
+        <div class="top-bar">
+          <h1 class="title has-text-primary">Tweets</h1>
+          <div class="dropdown is-hoverable is-right">
+            <div class="dropdown-trigger">
+              <button
+                class="button"
+                aria-haspopup="true"
+                aria-controls="dropdown-menu4"
+              >
+                <span class="icon is-small">
+                  <i class="fas fa-cog" aria-hidden="true"></i>
+                </span>
+              </button>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+              <div class="dropdown-content">
+                <a
+                  (click)="onDeleteListClick()"
+                  class="dropdown-item has-text-danger"
+                >
+                  Delete User Account
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task Elements -->
+        <div
+          class="task"
+          *ngFor="let task of tasks"
+          (click)="onTaskClick(task)"
+          [ngClass]="{ completed: task.completed }"
+        >
+          <div class="task-text">
+            <p>{{ task.title }}</p>
+          </div>
+          <div class="task-buttons">
+            <button
+              class="button is-danger"
+              (click)="task._id && onDeleteTaskClick(task._id)"
+              style="margin-left: 10px"
+            >
+              <div class="icon">
+                <i class="fas fa-trash"></i>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <h3 class="empty-state-text" *ngIf="tasks.length === 0">
+          There are no tweets here!
+        </h3>
+      </div>
+
+      <div *ngIf="!tasks">
+        <h3 class="empty-state-text">Please select a tweet from the sidebar</h3>
+      </div>
+    </div>
+  </div>
+</div>
